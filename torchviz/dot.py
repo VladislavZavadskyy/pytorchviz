@@ -7,18 +7,13 @@ from torch.autograd import Variable
 Node = namedtuple('Node', ('name', 'inputs', 'attr', 'op'))
 
 
-def make_dot(model, x):
+def make_dot(var, params=None):
     """ Produces Graphviz representation of PyTorch autograd graph.
 
     Blue nodes are the Variables that require grad, orange are Tensors
     saved for backward in torch.autograd.Function
 
-    Args:
-        model: torch nn model
-        x: input tensor
     """
-    var = model(x)
-    params = dict(model.named_parameters())
     if params is not None:
         assert all(isinstance(p, Variable) for p in params.values())
         param_map = {id(v): k for k, v in params.items()}
